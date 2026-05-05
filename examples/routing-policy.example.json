@@ -1,0 +1,44 @@
+{
+  "routing_policy": {
+    "planner_roles": ["planning", "architecture", "requirements"],
+    "builder_roles": ["coding", "testing", "documentation"],
+    "reviewer_roles": ["review", "qa", "security", "performance"],
+    "fallback_lanes": [
+      {
+        "name": "local-fast-fallback",
+        "when": "cheap_repetitive_or_remote_timeout",
+        "workers": ["ollama_planner", "ollama_reviewer"]
+      },
+      {
+        "name": "remote-review-fallback",
+        "when": "builder_failed_or_needs_final_judgement",
+        "workers": ["codex_auditor", "claude_strategist"]
+      }
+    ],
+    "budget_modes": {
+      "cheap": {
+        "prefer_local": true,
+        "max_remote_hops": 1,
+        "notes": "Keep simple repetitive work local and escalate only when quality or write access demands it."
+      },
+      "balanced": {
+        "prefer_local": false,
+        "max_remote_hops": 2,
+        "notes": "Use specialized planners, builders, and reviewers with a fast fallback path."
+      },
+      "premium": {
+        "prefer_local": false,
+        "max_remote_hops": 3,
+        "notes": "Use higher-quality remote lanes first when the task is risky or strategic."
+      }
+    },
+    "quick_ping_strategy": [
+      "Prefer local config, auth, or cached state before heavy CLI status calls.",
+      "Hide console windows and keep probes short."
+    ],
+    "deep_ping_strategy": [
+      "Send a compact deterministic request that proves a real roundtrip.",
+      "Capture framework label, target model or agent, and visible assistant text."
+    ]
+  }
+}

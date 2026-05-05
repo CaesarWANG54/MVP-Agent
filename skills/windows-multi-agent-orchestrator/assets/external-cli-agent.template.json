@@ -1,0 +1,36 @@
+{
+  "worker_id": "replace-me",
+  "worker_type": "external_cli_agent",
+  "display_name": "Replace Me",
+  "role": "Describe the platform role here.",
+  "capabilities": ["planning"],
+  "cost_tier": 3,
+  "quality_tier": 3,
+  "speed_tier": 3,
+  "local_only": false,
+  "api_cost": true,
+  "supports_workspace_write": false,
+  "enabled": true,
+  "platform": {
+    "framework_label": "Framework Name",
+    "backend_label": "CLI Backend",
+    "target_label": "target-model-or-agent",
+    "mode_family": "agent_cli",
+    "security_label": "read=plan / write=plan",
+    "security_detail": "Describe how this platform is authorized and sandboxed on Windows."
+  },
+  "config": {
+    "binary": "replace-binary",
+    "model": "optional-model-name",
+    "invoke_command": ["replace-binary", "run", "--mode", "{mode}"],
+    "health_command": ["replace-binary", "--version"],
+    "quick_ping_command": ["replace-binary", "status", "--json"],
+    "response_parser": "text",
+    "prompt_transport": "stdin",
+    "read_mode_value": "read",
+    "write_mode_value": "write",
+    "timeout": 300,
+    "quick_timeout": 20,
+    "deep_timeout": 90
+  }
+}

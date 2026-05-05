@@ -1,0 +1,14 @@
+{
+  "sidebar_width": 390,
+  "sidebar_expanded": true,
+  "detail_panel_expanded": false,
+  "sidebar_sections": {
+    "pet": true,
+    "summary": true,
+    "control": true,
+    "queue": true,
+    "workers": false,
+    "system": false,
+    "history": false
+  }
+}

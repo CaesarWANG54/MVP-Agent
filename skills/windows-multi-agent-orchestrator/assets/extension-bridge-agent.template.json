@@ -1,0 +1,36 @@
+{
+  "worker_id": "replace-extension-bridge",
+  "worker_type": "extension_bridge_agent",
+  "display_name": "Extension Bridge Agent",
+  "role": "Describe the IDE-extension role here.",
+  "capabilities": ["planning"],
+  "cost_tier": 3,
+  "quality_tier": 3,
+  "speed_tier": 3,
+  "local_only": false,
+  "api_cost": true,
+  "supports_workspace_write": false,
+  "enabled": true,
+  "platform": {
+    "framework_label": "Extension Bridge",
+    "backend_label": "IDE Extension Bridge",
+    "target_label": "editor-or-extension-agent",
+    "mode_family": "extension_bridge",
+    "security_label": "bridge controlled",
+    "security_detail": "Describe how the bridge limits read/write scope on Windows."
+  },
+  "config": {
+    "binary": "replace-bridge-binary",
+    "bridge_command": ["replace-bridge-binary", "run", "--mode", "{mode}"],
+    "health_command": ["replace-bridge-binary", "status", "--json"],
+    "quick_ping_command": ["replace-bridge-binary", "ping", "--quick"],
+    "deep_ping_command": ["replace-bridge-binary", "ping", "--deep"],
+    "response_parser": "text",
+    "prompt_transport": "stdin",
+    "read_mode_value": "read",
+    "write_mode_value": "write",
+    "timeout": 300,
+    "quick_timeout": 20,
+    "deep_timeout": 90
+  }
+}

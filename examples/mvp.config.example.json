@@ -1,0 +1,22 @@
+{
+  "workspace_root": "C:\\path\\to\\MVP-Agent",
+  "runs_dir": "C:\\path\\to\\MVP-Agent\\mvp_runs",
+  "skills": {
+    "enabled": true,
+    "discover_roots": [
+      "C:\\path\\to\\MVP-Agent\\skills",
+      "C:\\Users\\YourName\\.codex\\skills",
+      "C:\\Users\\YourName\\.codex\\plugins\\cache\\openai-curated"
+    ],
+    "max_cards": 256
+  },
+  "pet": {
+    "enabled": true,
+    "selected_pet_id": "mvp-agent-pet",
+    "lock_to_default": true,
+    "default_package_dir": "C:\\path\\to\\MVP-Agent\\mvp\\assets\\pets\\mvp-agent-pet",
+    "discover_roots": [
+      "C:\\path\\to\\MVP-Agent\\mvp\\assets\\pets"
+    ]
+  }
+}

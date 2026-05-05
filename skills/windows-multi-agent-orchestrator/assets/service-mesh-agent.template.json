@@ -1,0 +1,37 @@
+{
+  "worker_id": "replace-service-mesh",
+  "worker_type": "service_mesh_agent",
+  "display_name": "Service Mesh Agent",
+  "role": "Describe the HTTP or daemon-backed agent role here.",
+  "capabilities": ["planning"],
+  "cost_tier": 3,
+  "quality_tier": 3,
+  "speed_tier": 3,
+  "local_only": false,
+  "api_cost": true,
+  "supports_workspace_write": false,
+  "enabled": true,
+  "platform": {
+    "framework_label": "Service Mesh",
+    "backend_label": "Agent Service API",
+    "target_label": "https://agent-service.example",
+    "mode_family": "service_mesh",
+    "security_label": "service policy controlled",
+    "security_detail": "Describe the API auth model, workspace scope, and cancellation contract."
+  },
+  "config": {
+    "base_url": "http://127.0.0.1:8787",
+    "invoke_path": "/invoke",
+    "health_path": "/health",
+    "quick_ping_path": "/ping/quick",
+    "deep_ping_path": "/ping/deep",
+    "invoke_method": "POST",
+    "response_parser": "json_field",
+    "response_text_field": "result",
+    "read_mode_value": "read",
+    "write_mode_value": "write",
+    "timeout": 300,
+    "quick_timeout": 15,
+    "deep_timeout": 90
+  }
+}

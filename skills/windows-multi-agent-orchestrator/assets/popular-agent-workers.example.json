@@ -1,0 +1,169 @@
+{
+  "workers": [
+    {
+      "worker_id": "aider_builder",
+      "worker_type": "external_cli_agent",
+      "display_name": "Aider Builder",
+      "role": "Write-capable patch lane for focused code changes.",
+      "capabilities": ["coding", "testing", "documentation"],
+      "cost_tier": 3,
+      "quality_tier": 4,
+      "speed_tier": 3,
+      "local_only": false,
+      "api_cost": true,
+      "supports_workspace_write": true,
+      "platform": {
+        "framework_label": "Aider",
+        "backend_label": "Aider CLI",
+        "target_label": "aider/default",
+        "mode_family": "agent_cli",
+        "security_label": "workspace-write by configuration",
+        "security_detail": "Respect the workspace scope and keep a separate reviewer lane."
+      },
+      "config": {
+        "binary": "aider",
+        "invoke_command": ["aider", "--message", "{prompt}"],
+        "health_command": ["aider", "--version"],
+        "quick_ping_command": ["aider", "--version"],
+        "response_parser": "text",
+        "prompt_transport": "inline",
+        "timeout": 360,
+        "quick_timeout": 15,
+        "deep_timeout": 90
+      }
+    },
+    {
+      "worker_id": "goose_planner",
+      "worker_type": "external_cli_agent",
+      "display_name": "Goose Planner",
+      "role": "Structured planning lane for architecture and route design.",
+      "capabilities": ["planning", "design", "architecture", "review"],
+      "cost_tier": 3,
+      "quality_tier": 4,
+      "speed_tier": 3,
+      "local_only": false,
+      "api_cost": true,
+      "supports_workspace_write": false,
+      "platform": {
+        "framework_label": "Goose",
+        "backend_label": "Goose CLI",
+        "target_label": "goose/default",
+        "mode_family": "agent_cli",
+        "security_label": "read-mostly",
+        "security_detail": "Use Goose as a planner or reviewer unless a write-safe lane is explicitly required."
+      },
+      "config": {
+        "binary": "goose",
+        "invoke_command": ["goose", "run", "--json", "--mode", "{mode}"],
+        "health_command": ["goose", "--version"],
+        "quick_ping_command": ["goose", "status", "--json"],
+        "response_parser": "json_field",
+        "response_text_field": "result",
+        "prompt_transport": "stdin",
+        "timeout": 300,
+        "quick_timeout": 20,
+        "deep_timeout": 90
+      }
+    },
+    {
+      "worker_id": "gemini_reviewer",
+      "worker_type": "external_cli_agent",
+      "display_name": "Gemini Reviewer",
+      "role": "High-level synthesis or review lane when a Gemini CLI is available.",
+      "capabilities": ["review", "qa", "summarization", "documentation"],
+      "cost_tier": 3,
+      "quality_tier": 4,
+      "speed_tier": 3,
+      "local_only": false,
+      "api_cost": true,
+      "supports_workspace_write": false,
+      "platform": {
+        "framework_label": "Gemini",
+        "backend_label": "Gemini CLI",
+        "target_label": "gemini/default",
+        "mode_family": "agent_cli",
+        "security_label": "read-only by policy",
+        "security_detail": "Reserve Gemini for planning, review, and synthesis unless the environment provides a controlled write lane."
+      },
+      "config": {
+        "binary": "gemini",
+        "invoke_command": ["gemini", "run", "--prompt", "{prompt}"],
+        "health_command": ["gemini", "--version"],
+        "quick_ping_command": ["gemini", "--version"],
+        "response_parser": "text",
+        "prompt_transport": "inline",
+        "timeout": 300,
+        "quick_timeout": 15,
+        "deep_timeout": 90
+      }
+    },
+    {
+      "worker_id": "cline_bridge",
+      "worker_type": "extension_bridge_agent",
+      "display_name": "Cline Bridge",
+      "role": "IDE bridge lane for extension-hosted planning or coding work.",
+      "capabilities": ["planning", "coding", "review"],
+      "cost_tier": 3,
+      "quality_tier": 4,
+      "speed_tier": 3,
+      "local_only": false,
+      "api_cost": true,
+      "supports_workspace_write": true,
+      "platform": {
+        "framework_label": "Cline",
+        "backend_label": "IDE Extension Bridge",
+        "target_label": "cline/default",
+        "mode_family": "extension_bridge",
+        "security_label": "bridge controlled",
+        "security_detail": "Keep the bridge scoped to the active workspace and enforce reviewer separation."
+      },
+      "config": {
+        "binary": "cline-bridge",
+        "bridge_command": ["cline-bridge", "run", "--mode", "{mode}", "--access", "{write_mode}"],
+        "health_command": ["cline-bridge", "status", "--json"],
+        "quick_ping_command": ["cline-bridge", "ping", "--quick"],
+        "deep_ping_command": ["cline-bridge", "ping", "--deep"],
+        "response_parser": "text",
+        "prompt_transport": "stdin",
+        "timeout": 300,
+        "quick_timeout": 20,
+        "deep_timeout": 90
+      }
+    },
+    {
+      "worker_id": "crewai_mesh",
+      "worker_type": "service_mesh_agent",
+      "display_name": "CrewAI Mesh",
+      "role": "Service-backed orchestration lane for daemon or HTTP agents.",
+      "capabilities": ["planning", "coding", "coordination", "review"],
+      "cost_tier": 3,
+      "quality_tier": 4,
+      "speed_tier": 3,
+      "local_only": false,
+      "api_cost": true,
+      "supports_workspace_write": true,
+      "platform": {
+        "framework_label": "CrewAI",
+        "backend_label": "Agent Service API",
+        "target_label": "http://127.0.0.1:8787",
+        "mode_family": "service_mesh",
+        "security_label": "service policy controlled",
+        "security_detail": "Use service-side auth, queueing, and cancellation while MVP stays the leader."
+      },
+      "config": {
+        "base_url": "http://127.0.0.1:8787",
+        "invoke_path": "/invoke",
+        "health_path": "/health",
+        "quick_ping_path": "/ping/quick",
+        "deep_ping_path": "/ping/deep",
+        "invoke_method": "POST",
+        "response_parser": "json_field",
+        "response_text_field": "result",
+        "auth_env": "MVP_CREWAI_TOKEN",
+        "timeout": 300,
+        "quick_timeout": 15,
+        "deep_timeout": 90
+      }
+    }
+  ]
+}

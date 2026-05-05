@@ -1,0 +1,7 @@
+interface:
+  display_name: "Windows Multi-Agent Orchestrator"
+  short_description: "Coordinate Windows 10/11 multi-agent control planes."
+  default_prompt: "Use $windows-multi-agent-orchestrator to design or extend a Windows 10/11 control plane that routes work across OpenClaw, Hermes Agent, Claude Code, Codex, Ollama, and similar agent platforms."
+
+policy:
+  allow_implicit_invocation: true

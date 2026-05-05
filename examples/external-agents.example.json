@@ -1,0 +1,147 @@
+{
+  "workers": [
+    {
+      "worker_id": "goose_planner",
+      "worker_type": "external_cli_agent",
+      "display_name": "Goose Planner",
+      "role": "Use Goose as a planning or architecture specialist.",
+      "capabilities": ["planning", "design", "architecture", "documentation"],
+      "cost_tier": 3,
+      "quality_tier": 4,
+      "speed_tier": 3,
+      "local_only": false,
+      "api_cost": true,
+      "supports_workspace_write": false,
+      "enabled": false,
+      "platform": {
+        "framework_label": "Goose",
+        "backend_label": "Goose CLI",
+        "target_label": "goose/default",
+        "mode_family": "agent_cli",
+        "security_label": "CLI controlled",
+        "security_detail": "Permissions depend on Goose CLI configuration."
+      },
+      "config": {
+        "binary": "goose",
+        "model": "default",
+        "invoke_command": ["goose", "run", "--json", "--mode", "{mode}"],
+        "quick_ping_command": ["goose", "status", "--json"],
+        "health_command": ["goose", "--version"],
+        "response_parser": "json_field",
+        "response_text_field": "result",
+        "prompt_transport": "stdin",
+        "timeout": 300,
+        "quick_timeout": 20,
+        "deep_timeout": 90
+      }
+    },
+    {
+      "worker_id": "aider_builder",
+      "worker_type": "external_cli_agent",
+      "display_name": "Aider Builder",
+      "role": "Use Aider for implementation-focused coding work.",
+      "capabilities": ["coding", "testing", "review", "documentation"],
+      "cost_tier": 3,
+      "quality_tier": 4,
+      "speed_tier": 3,
+      "local_only": false,
+      "api_cost": true,
+      "supports_workspace_write": true,
+      "enabled": false,
+      "platform": {
+        "framework_label": "Aider",
+        "backend_label": "Aider CLI",
+        "target_label": "aider/default",
+        "mode_family": "agent_cli",
+        "security_label": "repo write",
+        "security_detail": "Permissions depend on Aider CLI and model settings."
+      },
+      "config": {
+        "binary": "aider",
+        "invoke_command": ["aider", "--message", "{prompt}"],
+        "health_command": ["aider", "--version"],
+        "response_parser": "text",
+        "prompt_transport": "inline",
+        "read_mode_value": "read",
+        "write_mode_value": "write",
+        "timeout": 600,
+        "quick_timeout": 45,
+        "deep_timeout": 120
+      }
+    },
+    {
+      "worker_id": "cline_bridge",
+      "worker_type": "extension_bridge_agent",
+      "display_name": "Cline Bridge",
+      "role": "Use an IDE bridge when the planner or builder lives inside an editor extension.",
+      "capabilities": ["planning", "coding", "review"],
+      "cost_tier": 3,
+      "quality_tier": 4,
+      "speed_tier": 3,
+      "local_only": false,
+      "api_cost": true,
+      "supports_workspace_write": true,
+      "enabled": false,
+      "platform": {
+        "framework_label": "Cline",
+        "backend_label": "IDE Extension Bridge",
+        "target_label": "cline/default",
+        "mode_family": "extension_bridge",
+        "security_label": "bridge controlled",
+        "security_detail": "Keep the bridge scoped to the active workspace and enforce a separate reviewer lane."
+      },
+      "config": {
+        "binary": "cline-bridge",
+        "bridge_command": ["cline-bridge", "run", "--mode", "{mode}", "--access", "{write_mode}"],
+        "health_command": ["cline-bridge", "status", "--json"],
+        "quick_ping_command": ["cline-bridge", "ping", "--quick"],
+        "deep_ping_command": ["cline-bridge", "ping", "--deep"],
+        "response_parser": "text",
+        "prompt_transport": "stdin",
+        "read_mode_value": "read",
+        "write_mode_value": "write",
+        "timeout": 300,
+        "quick_timeout": 20,
+        "deep_timeout": 90
+      }
+    },
+    {
+      "worker_id": "crewai_mesh",
+      "worker_type": "service_mesh_agent",
+      "display_name": "CrewAI Mesh",
+      "role": "Use a service-backed multi-agent lane when the runtime lives behind HTTP or a daemon.",
+      "capabilities": ["planning", "coding", "coordination", "review"],
+      "cost_tier": 3,
+      "quality_tier": 4,
+      "speed_tier": 3,
+      "local_only": false,
+      "api_cost": true,
+      "supports_workspace_write": true,
+      "enabled": false,
+      "platform": {
+        "framework_label": "CrewAI",
+        "backend_label": "Agent Service API",
+        "target_label": "http://127.0.0.1:8787",
+        "mode_family": "service_mesh",
+        "security_label": "service policy controlled",
+        "security_detail": "Use service-side auth, queueing, and cancellation. Keep MVP as the leader and reviewer router."
+      },
+      "config": {
+        "base_url": "http://127.0.0.1:8787",
+        "invoke_path": "/invoke",
+        "health_path": "/health",
+        "quick_ping_path": "/ping/quick",
+        "deep_ping_path": "/ping/deep",
+        "invoke_method": "POST",
+        "response_parser": "json_field",
+        "response_text_field": "result",
+        "auth_env": "MVP_CREWAI_TOKEN",
+        "read_mode_value": "read",
+        "write_mode_value": "write",
+        "timeout": 300,
+        "quick_timeout": 15,
+        "deep_timeout": 90
+      }
+    }
+  ]
+}

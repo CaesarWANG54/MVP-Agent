@@ -1,0 +1,6 @@
+{
+  "id": "mvp-agent-pet",
+  "displayName": "MVP Trophy",
+  "description": "A cheerful pixel trophy mascot for MVP Agent, used for planning, coding, review, success, and alert states.",
+  "spritesheetPath": "spritesheet.webp"
+}
